@@ -141,13 +141,20 @@ class Producteev {
      * @return mixed
      */
     public function Curl($url){
+	echo "CURL: ".$url;
         $ch = curl_init($url);
-        curl_setopt_array($ch, array(
+		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1) ;
+		curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0) ;
+  /*      curl_setopt_array($ch, array(
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_SSL_VERIFYPEER => false,    // Shortcut for now
-        ));
+            CURLOPT_SSL_VERIFYPEER => true,    // Shortcut for now
+        ));//*/
+
         $result = curl_exec($ch);
 
+		echo "<br/>Curl error:".curl_error($ch)."<br/>";
+	
+	echo "<br/><br/>Result: ".(string)$result."<br/>";
         $data = json_decode($result);
 
         switch(curl_getinfo($ch,CURLINFO_HTTP_CODE)) {
@@ -166,7 +173,7 @@ class Producteev {
             default:
                 die('<div>'.curl_error($ch).'</div>');
         }
-
+echo "<br/>curl_close<br/>";
         curl_close($ch);
         $this->ClearParams();
         return $data;

@@ -80,7 +80,7 @@ try {
 The processIpn() method returned true if the IPN was "VERIFIED" and false if it
 was "INVALID".
 */
-if ($verified) {
+//if ($verified) {
     /*
     Once you have a verified IPN you need to do a few more checks on the POST
     fields--typically against data you stored in your database during when the
@@ -101,37 +101,33 @@ if ($verified) {
 		include_once('Producteev.php');
 		include_once('CAS-config.php');
 
-
 		$apiKey = PRODUCTEEV_API_KEY;
 		$apiSecret = PRODUCTEEV_SECRET;
 
-
-			$producteev = new Producteev($apiKey, $apiSecret);
-			$producteev->Login('davis.jrw@gmail.com',PRODUCTEEV_PASS);
-			//$producteev->ClearParams();
-			
-			$producteev->Set('title',$listener->getWorkItemTitle());
-
-			$d = $producteev->Execute('tasks/create');
-		//$producteev->Set('title',$listener->getWorkItemTitle());
+		$producteev = new Producteev($apiKey, $apiSecret);
+		$producteev->Login('davis.jrw@gmail.com',PRODUCTEEV_PASS);
 		
-		//$producteev->Execute('tasks/create');
+		$producteev->Set('title',$listener->getWorkItemTitle());
+		$producteev->Set('id_dashboard', '906212');
+		
+		$d = $producteev->Execute('tasks/create');
+
 		error_log($taskTitle);
 	}catch(Exception $pe){
 		error_log("Producteev error:".$e->getMessage());
 	}
 	
 		
-		mail('mail@jordan-davis.com', 'Verified IPN', $listener->getTextReport());
+		mail('mail@jordan-davis.com', 'Successful IPN', $listener->getTextReport());
 		
-
+/*
 } else {
     /*
     An Invalid IPN *may* be caused by a fraudulent transaction attempt. It's
     a good idea to have a developer or sys admin manually investigate any 
     invalid IPN.
-    */
+    ///
     mail('mail@jordan-davis.com', 'Invalid IPN', $listener->getTextReport());
-}
+}//*/
 
 ?>

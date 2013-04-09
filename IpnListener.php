@@ -255,7 +255,18 @@ class IpnListener {
 	*/
 	public function getWorkItemTitle()
 	{
-		return "".$this->post_data['payment_status']." ".$this->post_data['payment_type']." payment on ".$this->post_data['payment_date'];
+		$wiTitle = "";
+		
+		if($this->post_data['item_number1'] != null)
+		{
+			$wiTitle = "".$this->post_data['item_number1'];
+		}
+		else
+		{
+			$wiTitle = "".$this->post_data['payment_status']." ".$this->post_data['payment_type']." payment on ".$this->post_data['payment_date'];
+		}
+		
+		return $wiTitle;
 	}
 	
     /**
